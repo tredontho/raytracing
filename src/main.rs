@@ -1,5 +1,3 @@
-use std::io::{self, Write};
-
 fn main() {
     // Simple PPM example
 
