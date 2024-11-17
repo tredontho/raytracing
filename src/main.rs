@@ -1,3 +1,6 @@
+use raytrace::Color;
+use raytrace::Vec3;
+
 fn main() {
     // Simple PPM example
 
@@ -13,15 +16,13 @@ fn main() {
     for j in 0..image_height {
         eprintln!("Scanlines remaining: {}", image_height - j);
         for i in 0..image_width {
-            let r = (i as f64) / ((image_width - 1) as f64);
-            let g = (j as f64) / ((image_height - 1) as f64);
-            let b = 0.0;
+            let pixel_color = Color(Vec3::new(
+                (i as f64) / ((image_width - 1) as f64),
+                (j as f64) / ((image_height - 1) as f64),
+                0.0,
+            ));
 
-            let ir = (255.999 * r) as i64;
-            let ig = (255.999 * g) as i64;
-            let ib = (255.999 * b) as i64;
-
-            println!("{ir} {ig} {ib}");
+            println!("{pixel_color}");
         }
     }
 

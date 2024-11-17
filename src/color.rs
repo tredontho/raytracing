@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use crate::Vec3;
 
-pub struct Color(Vec3);
+pub struct Color(pub Vec3);
 
 impl Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
