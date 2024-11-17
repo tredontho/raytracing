@@ -164,8 +164,6 @@ impl DivAssign<f64> for Vec3 {
 
 #[cfg(test)]
 mod tests {
-    use std::hint::assert_unchecked;
-
     use super::*;
 
     #[test]
