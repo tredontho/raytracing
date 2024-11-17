@@ -9,11 +9,11 @@ fn main() {
 
     // Render
 
-    let mut image: String = String::new();
-    let header = format!("P3\n{image_width} {image_height}\n255\n");
-    image.push_str(&header);
+    let header = format!("P3\n{image_width} {image_height}\n255");
+    println!("{header}");
 
     for j in 0..image_height {
+        eprintln!("Scanlines remaining: {}", image_height - j);
         for i in 0..image_width {
             let r = (i as f64) / ((image_width - 1) as f64);
             let g = (j as f64) / ((image_height - 1) as f64);
@@ -23,9 +23,9 @@ fn main() {
             let ig = (255.999 * g) as i64;
             let ib = (255.999 * b) as i64;
 
-            image.push_str(&format!("{ir} {ig} {ib}\n"));
+            println!("{ir} {ig} {ib}");
         }
     }
 
-    io::stdout().write(image.as_bytes()).unwrap();
+    eprintln!("Done.");
 }
