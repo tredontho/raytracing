@@ -3,7 +3,7 @@ use std::{
     ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub},
 };
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Vec3 {
     e: [f64; 3],
 }
@@ -93,11 +93,27 @@ impl Add<&Vec3> for &Vec3 {
     }
 }
 
+impl Add for Vec3 {
+    type Output = Vec3;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        &self + &rhs
+    }
+}
+
 impl Sub<&Vec3> for &Vec3 {
     type Output = Vec3;
 
     fn sub(self, rhs: &Vec3) -> Self::Output {
         self + &-rhs
+    }
+}
+
+impl Sub for Vec3 {
+    type Output = Vec3;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        &self - &rhs
     }
 }
 
@@ -123,12 +139,28 @@ impl Mul<f64> for &Vec3 {
     }
 }
 
+impl Mul<f64> for Vec3 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: f64) -> Self::Output {
+        &self * rhs
+    }
+}
+
 // Scalar multiplcation on the left
 impl Mul<&Vec3> for f64 {
     type Output = Vec3;
 
     fn mul(self, rhs: &Vec3) -> Self::Output {
         rhs * self
+    }
+}
+
+impl Mul<Vec3> for f64 {
+    type Output = Vec3;
+
+    fn mul(self, rhs: Vec3) -> Self::Output {
+        &rhs * self
     }
 }
 

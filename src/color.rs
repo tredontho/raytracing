@@ -4,6 +4,12 @@ use crate::Vec3;
 
 pub struct Color(pub Vec3);
 
+impl Color {
+    pub fn new(r: f64, g: f64, b: f64) -> Color {
+        Color(Vec3::new(r, g, b))
+    }
+}
+
 impl Display for Color {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let Color(v) = self;
@@ -11,6 +17,12 @@ impl Display for Color {
         let gbyte = (255.999 * v.y()) as i64;
         let bbyte = (255.999 * v.z()) as i64;
         write!(f, "{} {} {}", rbyte, gbyte, bbyte)
+    }
+}
+
+impl From<Vec3> for Color {
+    fn from(value: Vec3) -> Self {
+        Color(value)
     }
 }
 
