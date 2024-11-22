@@ -28,7 +28,6 @@ fn main() {
     let viewport_upper_left =
         &camera_center - &Vec3::new(0.0, 0.0, focal_length) - &viewport_u / 2.0 - &viewport_v / 2.0;
     let pixel00_loc = viewport_upper_left + 0.5 * (&pixel_delta_u + &pixel_delta_v);
-    eprintln!("image_height = {}", image_height);
 
     // Render
 
@@ -52,14 +51,35 @@ fn main() {
 }
 
 fn ray_color(r: &Ray) -> Color {
-    let unit_direction: Vec3 = r.direction().normalize();
-    let a: f64 = 0.5 * (unit_direction.y() + 1.0);
-    Color::from((1.0 - a) * Vec3::new(1.0, 1.0, 1.0) + (a * Vec3::new(0.5, 0.7, 1.0)))
+    let t = hit_sphere(&Vec3::new(0.0, 0.0, -1.0), 0.5, r);
+
+    if t > 0.0 {
+        let n = (r.at(t) - Vec3::new(0.0, 0.0, -1.0)).normalize();
+        Color::from(0.5 * Vec3::new(n.x() + 1.0, n.y() + 1.0, n.z() + 1.0))
+    } else {
+        let unit_direction: Vec3 = r.direction().normalize();
+        let a: f64 = 0.5 * (unit_direction.y() + 1.0);
+        Color::from((1.0 - a) * Vec3::new(1.0, 1.0, 1.0) + (a * Vec3::new(0.5, 0.7, 1.0)))
+    }
+}
+
+fn hit_sphere(center: &Vec3, radius: f64, r: &Ray) -> f64 {
+    let oc = center - r.origin();
+    let a = r.direction().dot(r.direction());
+    let b = -2.0 * r.direction().dot(&oc);
+    let c = oc.dot(&oc) - radius * radius;
+    let discriminant = b * b - 4.0 * a * c;
+
+    if discriminant < 0.0 {
+        -1.0
+    } else {
+        (-b - f64::sqrt(discriminant)) / (2.0 * a)
+    }
 }
 
 fn max<T>(a: T, b: T) -> T
 where
-    T: PartialOrd,
+    T: PartialOrd + Copy,
 {
     if a >= b {
         a
